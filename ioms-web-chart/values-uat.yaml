@@ -1,0 +1,38 @@
+environment: uat
+
+image:
+  repository: 703255197920.dkr.ecr.ap-southeast-1.amazonaws.com/obs-dev/uat
+  name: ioms-web-uat
+  tag: 'uat-de1dfba7'
+  pullPolicy: Always
+
+# Number of replicas
+replicaCount: 2
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 80
+
+# Ingress configuration
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/backend-protocol: 'HTTP'
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  hosts:
+    - host: prod1.obs-dev.pssobs.net
+      paths:
+        - path: /
+          pathType: Prefix
+
+# Resource configuration
+resources:
+  limits:
+    cpu: 1
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
