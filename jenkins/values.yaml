@@ -1,0 +1,58 @@
+controller:
+  admin:
+    username: admin
+    password: veFuK2sDLBPaNN
+    
+  ingress:
+    enabled: true
+    # hostName: jenkins.yourdomain.com  
+
+
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 2Gi
+    limits:
+      cpu: 2000m
+      memory: 4Gi
+
+persistence:
+  enabled: true
+  storageClass: "ebs-sc"
+  size: 10Gi
+  accessMode: "ReadWriteOnce"
+
+serviceAccount:
+  create: true
+  name: jenkins
+
+rbac:
+  create: true
+
+serviceType: LoadBalancer
+
+  # ingress:
+  #   enabled: true
+  #   apiVersion: networking.k8s.io/v1
+  #   annotations:
+  #     # AWS Load Balancer Controller
+  #     kubernetes.io/ingress.class: alb
+  #     alb.ingress.kubernetes.io/scheme: internet-facing
+  #     alb.ingress.kubernetes.io/target-type: ip
+
+  #     # Route53 specific annotations
+  #     external-dns.alpha.kubernetes.io/hostname: jenkins.yourdomain.com
+  #     alb.ingress.kubernetes.io/group.name: jenkins-ingress-group
+
+  #     # SSL Configuration
+  #     alb.ingress.kubernetes.io/certificate-arn: <your-certificate-arn>
+  #     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+  #     alb.ingress.kubernetes.io/ssl-redirect: 'true'
+
+  #   hostName: jenkins.yourdomain.com
+  #   tls:
+  #     - secretName: jenkins-tls
+  #       hosts:
+  #         - jenkins.yourdomain.com
+
+
