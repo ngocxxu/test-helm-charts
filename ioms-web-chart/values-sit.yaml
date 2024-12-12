@@ -1,0 +1,62 @@
+environment: sit
+
+image:
+  repository: 703255197920.dkr.ecr.ap-southeast-1.amazonaws.com/obs-dev/sit
+  name: ioms-web-sit 
+  tag: "sit-de1dfba7"
+  pullPolicy: Always
+
+# Number of replicas
+replicaCount: 2
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 80
+
+# Ingress configuration
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+
+# Resource configuration
+resources:
+  limits:
+    cpu: 1
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+# # Autoscaling configuration (if needed)
+# autoscaling:
+#   enabled: false
+#   minReplicas: 2
+#   maxReplicas: 5
+#   targetCPUUtilizationPercentage: 80
+
+# # Environment-specific variables for SIT (if needed)
+# env:
+#   - name: API_URL
+#     value: "http://backend-sit-service"
+#   - name: LOG_LEVEL
+#     value: "debug"
+
+# # Liveness and readiness probe configurations
+# livenessProbe:
+#   httpGet:
+#     path: /health
+#     port: http
+#   initialDelaySeconds: 60
+#   periodSeconds: 10
+
+# readinessProbe:
+#   httpGet:
+#     path: /ready
+#     port: http
+#   initialDelaySeconds: 30
+#   periodSeconds: 10
