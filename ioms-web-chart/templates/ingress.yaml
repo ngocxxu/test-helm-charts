@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}-ioms-web
+  name: {{ .Release.Name }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -19,7 +19,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ $.Release.Name }}-ioms-web
+                name: {{ $.Release.Name }}
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}

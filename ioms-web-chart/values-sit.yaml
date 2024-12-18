@@ -18,24 +18,27 @@ service:
 # Ingress configuration
 ingress:
   enabled: true
-  className: nginx
+  className: alb
   annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-southeast-1:703255197920:certificate/4e3058f2-469f-4d97-847b-7e80141958da
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
   hosts:
-      - host: develop1.obs-dev.pssobs.net
-        paths:
-          - path: /
-            pathType: Prefix
+    - host: develop1.obs-dev.pssobs.net
+      paths:
+        - path: /
+          pathType: Prefix
 
 # Resource configuration
 resources:
   limits:
-    cpu: 1
-    memory: 1Gi
+    cpu: 500m    
+    memory: 512Mi 
   requests:
-    cpu: 500m
-    memory: 512Mi
+    cpu: 250m    
+    memory: 256Mi 
 
 livenessProbe:
   httpGet:

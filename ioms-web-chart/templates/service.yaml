@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-ioms-web
+  name: {{ .Release.Name }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -9,4 +9,4 @@ spec:
       targetPort: 80
       protocol: TCP
   selector:
-    app: {{ .Release.Name }}-ioms-web
+    app: {{ .Release.Name }}
