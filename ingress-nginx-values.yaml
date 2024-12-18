@@ -2,12 +2,12 @@ controller:
   replicaCount: 3
 
   service:
+    type: LoadBalancer
     annotations:
       service.beta.kubernetes.io/aws-load-balancer-type: nlb
       service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
       service.beta.kubernetes.io/aws-load-balancer-ssl-cert: 'arn:aws:acm:ap-southeast-1:703255197920:certificate/4e3058f2-469f-4d97-847b-7e80141958da'
       service.beta.kubernetes.io/aws-load-balancer-ssl-ports: '443'
-      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: 'http'
 
   config:
     use-forwarded-headers: 'true'
@@ -16,10 +16,6 @@ controller:
     proxy-read-timeout: '120' # Read timeout
     proxy-send-timeout: '120' # Send timeout
     client-max-body-size: '10m'
-    keep-alive: '75'
-    keep-alive-requests: '100'
-    ssl-redirect: 'true'
-    force-ssl-redirect: 'true'
 
   resources:
     requests:
