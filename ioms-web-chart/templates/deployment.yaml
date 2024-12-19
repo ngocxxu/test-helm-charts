@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}
+        selector:
     spec:
       containers:
         - name: {{ .Values.deployment.name }}

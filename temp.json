@@ -8,7 +8,7 @@
       "name": "ingress-nginx"
     },
     "name": "ingress-nginx",
-    "resourceVersion": "46828754",
+    "resourceVersion": "48880595",
     "uid": "89efb07c-f576-4101-80e4-c0228a8f6fcf"
   },
   "spec": {

@@ -6,7 +6,7 @@ metadata:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
-    external-dns.alpha.kubernetes.io/hostname: jenkins.ngocquach.click,frontend.ngocquach.click,backend.ngocquach.click
+    external-dns.alpha.kubernetes.io/hostname: develop1.obs-dev.pssobs.net
 spec:
   tls:
   - hosts:

@@ -4,7 +4,7 @@ environment:
 image:
   repository: 703255197920.dkr.ecr.ap-southeast-1.amazonaws.com/obs-dev/sit
   name: ioms-web-sit
-  tag: 'sit-de1dfba7'
+  tag: 'latest'
   pullPolicy: Always
 
 # Number of replicas
@@ -12,15 +12,15 @@ replicaCount: 3
 
 deployment:
   name: ioms-web-sit
-  port: 5173
+  port: 3000
 
 
 service:
   selector:
     app: ioms-web-sit
   type: ClusterIP
-  port: 5173
-  targetPort: 5173
+  port: 3000
+  targetPort: 3000
 
 # ingress:
 #   enabled: true
