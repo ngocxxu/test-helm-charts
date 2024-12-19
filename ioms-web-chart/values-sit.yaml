@@ -22,16 +22,16 @@ service:
   port: 5173
   targetPort: 5173
 
-ingress:
-  enabled: true
-  className: traefik
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-  hosts:
-    - host: develop1.obs-dev.pssobs.net
-      paths:
-        - path: /
-          pathType: Prefix
+# ingress:
+#   enabled: true
+#   className: traefik
+#   annotations:
+#     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+#   hosts:
+#     - host: develop1.obs-dev.pssobs.net
+#       paths:
+#         - path: /
+#           pathType: Prefix
 
 # ingress:
 #   enabled: true
