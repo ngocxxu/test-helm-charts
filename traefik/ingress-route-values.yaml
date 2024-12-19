@@ -1,0 +1,4 @@
+host: develop1.obs-dev.pssobs.net
+serviceName: ioms-web-sit
+serviceNamespace: ioms-web-sit
+servicePort: 5173

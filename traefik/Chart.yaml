@@ -1,0 +1,5 @@
+apiVersion: v2
+name: ioms-route
+description: IOMS SIT IngressRoute
+version: 0.1.0
+appVersion: "1.0.0"

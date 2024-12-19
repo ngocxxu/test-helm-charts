@@ -3,25 +3,47 @@ environment:
 
 image:
   repository: 703255197920.dkr.ecr.ap-southeast-1.amazonaws.com/obs-dev/sit
-  name: ioms-web-sit 
-  tag: "sit-de1dfba7"
+  name: ioms-web-sit
+  tag: 'sit-de1dfba7'
   pullPolicy: Always
 
 # Number of replicas
 replicaCount: 3
 
+deployment:
+  name: ioms-web-sit
+  port: 5173
+
+
 service:
+  selector:
+    app: ioms-web-sit
   type: ClusterIP
-  port: 80
+  port: 5173
   targetPort: 5173
 
 ingress:
   enabled: true
-  host: develop1.obs-dev.pssobs.net
-  className: nginx
+  className: traefik
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+  hosts:
+    - host: develop1.obs-dev.pssobs.net
+      paths:
+        - path: /
+          pathType: Prefix
+
+# ingress:
+#   enabled: true
+#   hosts:
+#     - host: develop1.obs-dev.pssobs.net
+#       paths:
+#         - path: /
+#           pathType: Prefix
+#   className: nginx
 
 # # Service configuration
-# service: 
+# service:
 #   port: 80
 #   targetPort: 5173
 #   type: LoadBalancer
@@ -48,11 +70,11 @@ ingress:
 # Resource configuration
 resources:
   limits:
-    cpu: 500m    
-    memory: 512Mi 
+    cpu: 500m
+    memory: 512Mi
   requests:
-    cpu: 250m    
-    memory: 256Mi 
+    cpu: 250m
+    memory: 256Mi
 
 livenessProbe:
   httpGet:
@@ -73,7 +95,3 @@ readinessProbe:
   timeoutSeconds: 5
   failureThreshold: 6
   successThreshold: 1
-
-deployment:
-  imagePullSecrets:
-  - name: ecr-secret

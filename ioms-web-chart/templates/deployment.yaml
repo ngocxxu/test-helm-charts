@@ -13,11 +13,11 @@ spec:
         app: {{ .Release.Name }}
     spec:
       containers:
-        - name: ioms-web
+        - name: {{ .Values.deployment.name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: 80
+            - containerPort: {{ .Values.deployment.port }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if .Values.environment }}
