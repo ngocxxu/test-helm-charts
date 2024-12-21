@@ -9,6 +9,11 @@ controller:
       service.beta.kubernetes.io/aws-load-balancer-ssl-cert: 'arn:aws:acm:ap-southeast-1:703255197920:certificate/4e3058f2-469f-4d97-847b-7e80141958da'
       service.beta.kubernetes.io/aws-load-balancer-ssl-ports: '443'
 
+      service.beta.kubernetes.io/aws-load-balancer-healthcheck-interval: '10'
+      service.beta.kubernetes.io/aws-load-balancer-healthcheck-timeout: '5'
+      service.beta.kubernetes.io/aws-load-balancer-healthcheck-healthy-threshold: '2'
+      service.beta.kubernetes.io/aws-load-balancer-healthcheck-unhealthy-threshold: '2'
+
   config:
     use-forwarded-headers: 'true'
     proxy-body-size: '10m' # Max body size
@@ -16,6 +21,11 @@ controller:
     proxy-read-timeout: '120' # Read timeout
     proxy-send-timeout: '120' # Send timeout
     client-max-body-size: '10m'
+
+    ssl-protocols: 'TLSv1.2 TLSv1.3'
+    ssl-ciphers: 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256'
+
+    worker-processes: 'auto'
 
   resources:
     requests:
