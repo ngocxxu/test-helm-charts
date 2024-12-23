@@ -1,73 +1,25 @@
+namespace: ioms-web-sit
+
 environment:
   NODE_ENV: sit
 
 image:
   repository: 703255197920.dkr.ecr.ap-southeast-1.amazonaws.com/obs-dev/sit
   name: ioms-web-sit
-  tag: 'latest'
+  tag: latest
   pullPolicy: Always
 
-# Number of replicas
 replicaCount: 3
 
 deployment:
   name: ioms-web-sit
   port: 3000
 
-
 service:
-  selector:
-    app: ioms-web-sit
-  type: ClusterIP
+  type: LoadBalancer
   port: 3000
   targetPort: 3000
 
-# ingress:
-#   enabled: true
-#   className: traefik
-#   annotations:
-#     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-#   hosts:
-#     - host: develop1.obs-dev.pssobs.net
-#       paths:
-#         - path: /
-#           pathType: Prefix
-
-# ingress:
-#   enabled: true
-#   hosts:
-#     - host: develop1.obs-dev.pssobs.net
-#       paths:
-#         - path: /
-#           pathType: Prefix
-#   className: nginx
-
-# # Service configuration
-# service:
-#   port: 80
-#   targetPort: 5173
-#   type: LoadBalancer
-
-# # Ingress configuration
-# ingress:
-#   enabled: true
-#   className: alb
-#   annotations:
-#     alb.ingress.kubernetes.io/scheme: internet-facing
-#     alb.ingress.kubernetes.io/target-type: ip
-#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
-#     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-southeast-1:703255197920:certificate/4e3058f2-469f-4d97-847b-7e5173141958da
-#     alb.ingress.kubernetes.io/ssl-redirect: '443'
-#     alb.ingress.kubernetes.io/healthcheck-path: "/"
-#     alb.ingress.kubernetes.io/success-codes: "200-399"
-
-#   hosts:
-#     - host: develop1.obs-dev.pssobs.net
-#       paths:
-#         - path: /
-#           pathType: Prefix
-
-# Resource configuration
 resources:
   limits:
     cpu: 500m
@@ -78,8 +30,8 @@ resources:
 
 livenessProbe:
   httpGet:
-    path: /
-    port: 5173
+    path: /healthz
+    port: 3000
   initialDelaySeconds: 60
   periodSeconds: 10
   timeoutSeconds: 5
@@ -88,10 +40,43 @@ livenessProbe:
 
 readinessProbe:
   httpGet:
-    path: /
-    port: 5173
+    path: /healthz
+    port: 3000
   initialDelaySeconds: 30
   periodSeconds: 10
   timeoutSeconds: 5
   failureThreshold: 6
   successThreshold: 1
+
+ingress:
+  enabled: true
+  className: alb
+  hosts:
+    - host: develop1.obs-dev.pssobs.net
+      paths:
+        - path: /
+          pathType: Prefix
+  annotations:
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-southeast-1:703255197920:certificate/4e3058f2-469f-4d97-847b-7e80141958da
+    alb.ingress.kubernetes.io/healthcheck-path: /healthz
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=60
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-2016-08
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/success-codes: 200,302
+    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.type=lb_cookie,deregistration_delay.timeout_seconds=30
+    alb.ingress.kubernetes.io/target-group-name: ioms-web-sit
+    alb.ingress.kubernetes.io/target-type: ip
+
+deploymentStrategy:
+  type: RollingUpdate
+  maxUnavailable: 25%
+  maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+
+securityContext: {}
+schedulerName: default-scheduler
+terminationGracePeriodSeconds: 30
